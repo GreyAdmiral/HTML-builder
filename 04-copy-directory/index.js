@@ -29,12 +29,12 @@ fs.watch(folder, (event, file) => {
     const stream = fs.createReadStream(path.join(folder, file), {
       encoding: 'utf-8',
     });
-    stream.on('data', (cnt) => {
+    stream.once('data', (cnt) => {
       const wrStream = fs.createWriteStream(path.join(copyFolder, file));
       wrStream.write(cnt);
       wrStream.end();
     });
-    stream.on('error', (err) => {
+    stream.once('error', (err) => {
       throw err;
     });
   } else if (event == 'rename') {
