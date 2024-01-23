@@ -28,9 +28,10 @@ fsPromises
           fsPromises
             .readFile(path.join(components, fileInfo.base), 'utf-8')
             .then((data) => {
-              process.env.template = process.env.template
-                .split('{{' + fileInfo.name + '}}')
-                .join(data);
+              process.env.template = process.env.template.replaceAll(
+                '{{' + fileInfo.name + '}}',
+                data,
+              );
               fs.writeFile(
                 html,
                 process.env.template,
