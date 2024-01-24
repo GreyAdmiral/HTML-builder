@@ -70,13 +70,15 @@ fsPromises
   })
   .catch((err) => console.error(err));
 
-fs.access(assets, (err) => {
+fs.access(assets, async (err) => {
   if (!err) {
-    statsCopy(assets, bundleAssets);
+    await statsCopy(assets, bundleAssets).then((folder) => {
+      fsPromises.rm(folder, { recursive: true, force: true });
+    });
   }
 });
 
-function statsCopy(folder, buildFolder) {
+async function statsCopy(folder, buildFolder) {
   fsPromises
     .mkdir(buildFolder, { recursive: true })
     .then(() => {
@@ -88,7 +90,7 @@ function statsCopy(folder, buildFolder) {
             }
 
             if (fstat.isFile()) {
-              fs.copyFile(
+              fs.rename(
                 path.join(folder, it),
                 path.join(buildFolder, it),
                 (err) => {
@@ -105,6 +107,7 @@ function statsCopy(folder, buildFolder) {
       });
     })
     .catch((err) => console.error(err));
+    return folder;
 }
 
 function hError(err) {
