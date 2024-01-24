@@ -32,7 +32,7 @@ function interface() {
   });
 
   rl.question('Введите текст: ', (text) => {
-    if (text == 'exit') {
+    if (text.trim() == 'exit') {
       rl.close();
     } else {
       appendText(text);
