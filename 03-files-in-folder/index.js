@@ -19,8 +19,8 @@ function statsLog(folder) {
           }
 
           if (!fstat.isDirectory()) {
-            const arr = it.split('.');
-            console.log(arr[0], '-', arr[1], '-', fstat.size + 'b');
+            const info = path.parse(path.join(folder, it));
+            console.log(info.name, '-', info.ext.slice(1), '-', fstat.size + 'b');
           }
         });
       });
